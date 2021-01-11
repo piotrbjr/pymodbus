@@ -138,6 +138,14 @@ class ModbusRtuFramer(ModbusFramer):
         :returns: True if ready, False otherwise
         """
         if len(self._buffer) > self._hsize:
+
+            # HOTFIX:
+            func_code = byte2int(self._buffer[1])
+            pdu_class = self.decoder.lookupPduClass(func_code)
+            if hasattr(pdu_class, '_rtu_byte_count_pos'):
+                if len(self._buffer) <= pdu_class._rtu_byte_count_pos:
+                    return False
+
             if not self._header:
                 self.populateHeader()
 
