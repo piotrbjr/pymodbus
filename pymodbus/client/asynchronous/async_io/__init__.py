@@ -148,7 +148,7 @@ class BaseModbusAsyncClientProtocol(AsyncModbusClientMixin):
         '''
         _logger.debug("recv: " + hexlify_packets(data))
         unit = self.framer.decode_data(data).get("unit", 0)
-        self.framer.processIncomingPacket(data, self._handleResponse, unit=unit)
+        self.framer.processIncomingPacket(data, self._handleResponse, unit=unit, single=True)
 
     def _handleResponse(self, reply, **kwargs):
         """
